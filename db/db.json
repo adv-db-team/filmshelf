@@ -1,0 +1,31 @@
+{
+  "films": [
+    {
+      "id": 1,
+      "title": "Inception",
+      "director": "Christopher Nolan",
+      "year": 2010,
+      "genre": "Sci-Fi, Action",
+      "plot": "A thief who enters the dreams of others to steal their secrets.",
+      "posterUrl": "https://m.media-amazon.com/images/I/71DwIcSgFcS.jpg"
+    },
+    {
+      "id": 2,
+      "title": "The Shawshank Redemption",
+      "director": "Frank Darabont",
+      "year": 1994,
+      "genre": "Drama",
+      "plot": "Two imprisoned men bond over years, finding eventual redemption through acts of common decency.",
+      "posterUrl": "https://m.media-amazon.com/images/S/pv-target-images/d26b48f88d5398cad86d2fd26d32b258d43e51d4e2f949c3848be69a1e147446.jpg"
+    },
+    {
+      "id": 3,
+      "title": "The Shawshank Redemption",
+      "director": "Frank Darabont",
+      "year": 1994,
+      "genre": "Drama",
+      "plot": "Two imprisoned men bond over years, finding eventual redemption through acts of common decency.",
+      "posterUrl": "https://m.media-amazon.com/images/S/pv-target-images/d26b48f88d5398cad86d2fd26d32b258d43e51d4e2f949c3848be69a1e147446.jpg"
+    }
+  ]
+}

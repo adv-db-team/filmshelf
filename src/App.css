@@ -1,38 +1,89 @@
 .App {
-  text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.heading {
+    color: #fd7e14;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.film-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns of equal width */
+    gap: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.film-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #f9e79f;
+    color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    height: 300px;
 }
 
-.App-link {
-  color: #61dafb;
+.film-card:hover {
+    transform: translateY(-5px);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.film-poster {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.film-info {
+    padding: 10px;
+}
+
+.film-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.delete-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.additional-info {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.add-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    border: none;
+    border-radius: 50%;
+    background-color: #fd7e14;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.2s ease;
+}
+
+.add-button:hover {
+    transform: scale(1.1);
 }
