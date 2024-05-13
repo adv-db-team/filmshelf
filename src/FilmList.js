@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FilmCard from './FilmCard';
+import './FilmList.css';
 
 const FilmList = ({ films, onDeleteFilm }) => {
     return (
         <div className="film-list">
-            {films.map(film => (
-                <FilmCard key={film._id} film={film} onDeleteFilm={onDeleteFilm} />
+            {films.map((film) => (
+                <FilmCard key={film.id} film={film} onDeleteFilm={onDeleteFilm} />
             ))}
         </div>
     );

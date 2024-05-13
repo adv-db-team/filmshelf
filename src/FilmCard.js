@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './FilmCard.css';
 
-const FilmCard = ({ film, onDeleteFilm }) => {
+const FilmCard = ({film, onDeleteFilm}) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = () => {
@@ -22,7 +22,7 @@ const FilmCard = ({ film, onDeleteFilm }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <img src={film.posterUrl} alt={film.title} className="film-poster" />
+            <img src={film.posterUrl} alt={film.title} className="film-poster"/>
             {isHovered && (
                 <div className="overlay">
                     <div className="overlay-content">

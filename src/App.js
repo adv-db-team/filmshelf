@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import FilmCard from './FilmCard';
 import AddFilmForm from './AddFilmForm';
+import Header from './Header';
 import './App.css';
 
 function App() {
     const [films, setFilms] = useState([]);
     const [showAddForm, setShowAddForm] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const fetchFilms = async () => {
@@ -60,11 +62,23 @@ function App() {
         }
     };
 
+    // Filter films based on search query
+    const filteredFilms = films.filter(film => {
+        const normalizedSearch = searchQuery.trim().toLowerCase();
+        return (
+            film.title.toLowerCase().includes(normalizedSearch) ||
+            film.director.toLowerCase().includes(normalizedSearch) ||
+            film.year.toString().includes(normalizedSearch) ||
+            film.genre.toLowerCase().includes(normalizedSearch) ||
+            film.plot.toLowerCase().includes(normalizedSearch)
+        );
+    });
+
     return (
         <div className="App">
-            <h1 className="heading">Film Library</h1>
+            <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             <div className="film-grid">
-                {films.map(film => (
+                {filteredFilms.map(film => (
                     <FilmCard key={film.id} film={film} onDeleteFilm={handleDeleteFilm} />
                 ))}
             </div>

@@ -1,0 +1,42 @@
+.header {
+    width: 100%;
+    background-color: orange;
+    color: #ffffff;
+    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Max width for content */
+    margin: 0 auto; /* Center the header content */
+    padding: 0 20px;
+}
+
+.heading {
+    font-size: 32px;
+}
+
+.search-container {
+    flex-grow: 1;
+    margin-right: 20px; /* Add offset between heading and search input */
+    max-width: 300px; /* Max width for search input */
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+}
+
+.film-grid {
+    margin-top: 20px; /* Add offset between header and film grid */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust number of columns as needed */
+    gap: 20px;
+}
+

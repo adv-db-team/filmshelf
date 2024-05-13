@@ -1,0 +1,30 @@
+.film-list {
+    position: relative;
+}
+
+.film-card {
+    position: absolute;
+    bottom: 20px; /* Adjust vertical position */
+    right: 20px; /* Adjust horizontal position */
+    width: 150px; /* Adjust card width */
+    height: 200px; /* Adjust card height */
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.add-icon {
+    font-size: 48px;
+    color: #333333;
+}
+
+.add-label {
+    font-size: 16px;
+    color: #333333;
+    margin-top: 10px;
+}
