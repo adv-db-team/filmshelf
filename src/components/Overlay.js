@@ -10,7 +10,7 @@ const Overlay = ({ item, type, onClose, onDelete, films, actors }) => {
     }, {}) : {};
 
     const filmsDictionary = films ? films.reduce((acc, film) => {
-        acc[film.id] = films.name;
+        acc[film.id] = film.title;
         return acc;
     }, {}) : {};
 
