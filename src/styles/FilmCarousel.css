@@ -1,0 +1,150 @@
+.film-carousel {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-size: cover;
+    background-position: 15% center;
+}
+
+.carousel-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7) 80%);
+    z-index: 1;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.carousel-text {
+    position: relative;
+    color: #fff;
+    padding: 20px;
+    margin-left: 30px;
+    z-index: 2;
+    max-width: 43%;
+}
+
+.carousel-text h3 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+.carousel-text p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.carousel-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-bottom: 2.5%;
+}
+
+.carousel-description {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.carousel-credits {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.carousel-credits span {
+    display: block;
+    margin-bottom: 5px;
+    padding-bottom: 2%;
+}
+
+.carousel-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.carousel-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #ff5733;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.carousel-button:hover {
+    background-color: #e04c2e;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.carousel-control.left {
+    left: 10px;
+}
+
+.carousel-control.right {
+    right: 10px;
+}
+
+.carousel-progress {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 5px;
+    z-index: 2;
+}
+
+.carousel-progress .circle {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.5;
+}
+
+.carousel-progress .circle.active {
+    opacity: 1;
+}
