@@ -1,0 +1,15 @@
+/* src/styles/App.css */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #222;
+}
+
+.App {
+  text-align: center;
+}
+
+.App a {
+  color: white;
+  text-decoration: none;
+}
