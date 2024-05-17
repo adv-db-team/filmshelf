@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/FilmCarousel.css';
+import Overlay from "./Overlay";
 
-const FilmCarousel = ({ films, actors }) => {
+const FilmCarousel = ({ films, actors, onDelete }) => {
     const [currentFilmIndex, setCurrentFilmIndex] = useState(0);
+    const [selectedFilm, setSelectedFilm] = useState(null);
+
     const actorsDictionary = actors.reduce((acc, actor) => {
         acc[actor.id] = actor.name;
         return acc;
@@ -27,6 +30,7 @@ const FilmCarousel = ({ films, actors }) => {
         return null;
     }
 
+
     return (
         <div className="film-carousel">
             {films.map((film, index) => (
@@ -47,6 +51,7 @@ const FilmCarousel = ({ films, actors }) => {
                         </div>
                         <div className="carousel-buttons">
                             <button className="carousel-button">Add to Favourites</button>
+                            <button className="carousel-button secondary" onClick={() => setSelectedFilm(film)}>Read More</button>
                         </div>
                     </div>
                 </div>
@@ -63,6 +68,16 @@ const FilmCarousel = ({ films, actors }) => {
                     />
                 ))}
             </div>
+
+            {selectedFilm && (
+                <Overlay
+                    item={selectedFilm}
+                    type="film"
+                    onClose={() => setSelectedFilm(null)}
+                    onDelete={onDelete}
+                    actors={actors}
+                />
+            )}
         </div>
     );
 };

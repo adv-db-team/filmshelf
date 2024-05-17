@@ -29,6 +29,23 @@ const App = () => {
   const handleAddActor = (actor) => {
     setActors([...actors, actor]);
   };
+  const handleDeleteFilm = (filmId) => {
+    // Delete film from your database
+    fetch(`/api/films/${filmId}`, {
+      method: 'DELETE'
+    }).then(() => {
+      setFilms(films.filter(film => film.id !== filmId));
+    });
+  };
+
+  const handleDeleteActor = (actorId) => {
+    // Delete actor from your database
+    fetch(`/api/actors/${actorId}`, {
+      method: 'DELETE'
+    }).then(() => {
+      setActors(actors.filter(actor => actor.id !== actorId));
+    });
+  };
 
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -45,16 +62,15 @@ const App = () => {
           <Routes>
             <Route path="/" element={
               <>
-                <FilmCarousel films={shuffle(films).slice(0, 5)} actors={actors} />
-                <FilmList films={films} />
+                <FilmCarousel films={shuffle(films).slice(0, 5)} actors={actors} onDelete={handleDeleteFilm} />
+                <FilmList films={films} actors={actors} onDelete={handleDeleteFilm}/>
                 <FloatingActionButton onAddFilm={handleAddFilm} />
               </>
             } />
             <Route path="/actors-list" element={
               <>
-                <ActorList actors={actors} />
+                <ActorList actors={actors} films={films} onDelete={handleDeleteActor} />
                 <FloatingActionButton onAddActor={handleAddActor} />
-
               </>
             } />
             <Route path="/add-film" element={<AddFilm onAddFilm={handleAddFilm} />} />
