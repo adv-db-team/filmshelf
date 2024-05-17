@@ -25,10 +25,9 @@
 
 .fab-container.expanded .fab {
     transform: rotate(45deg);
-    font-size: 45px;
 }
 
-.film-form {
+.form-container {
     position: absolute;
     bottom: 80px;
     right: 0;
@@ -41,12 +40,13 @@
     transition: opacity 0.3s, visibility 0.3s;
 }
 
-.film-form h2 {
+.form-container h2 {
     font-size: 24px;
     margin-bottom: 20px;
 }
 
-.film-form input, .film-form textarea {
+.form-container input,
+.form-container textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -54,7 +54,7 @@
     border-radius: 5px;
 }
 
-.film-form button {
+.form-container button {
     width: 100%;
     padding: 10px;
     border: none;
@@ -65,6 +65,31 @@
     cursor: pointer;
 }
 
-.film-form button:hover {
+.form-container button:hover {
+    background-color: #e04c2e;
+}
+
+.form-toggle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.form-toggle button {
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-toggle button.active {
+    background-color: #ff5733;
+}
+
+.form-toggle button:hover {
     background-color: #e04c2e;
 }

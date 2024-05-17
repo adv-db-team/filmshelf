@@ -26,6 +26,9 @@ const App = () => {
   const handleAddFilm = (film) => {
     setFilms([...films, film]);
   };
+  const handleAddActor = (actor) => {
+    setActors([...actors, actor]);
+  };
 
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -50,6 +53,8 @@ const App = () => {
             <Route path="/actors-list" element={
               <>
                 <ActorList actors={actors} />
+                <FloatingActionButton onAddActor={handleAddActor} />
+
               </>
             } />
             <Route path="/add-film" element={<AddFilm onAddFilm={handleAddFilm} />} />
