@@ -38,6 +38,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: opacity 0.3s, visibility 0.3s;
+    overflow-y: auto;
 }
 
 .form-container h2 {
@@ -91,5 +92,40 @@
 }
 
 .form-toggle button:hover {
+    background-color: #e04c2e;
+}
+
+.dropdown {
+    margin-bottom: 10px;
+}
+
+.dropdown select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.tag {
+    background-color: #555; /* Less bright */
+    color: #ddd; /* Less bright */
+    padding: 3px 6px; /* Smaller padding */
+    font-size: 12px; /* Smaller font size */
+    border-radius: 3px; /* Smaller border radius */
+    margin: 3px; /* Smaller margin */
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tag:hover {
     background-color: #e04c2e;
 }

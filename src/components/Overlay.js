@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Overlay.css';
 
-const Overlay = ({ item, type, onClose, onDelete, films, actors }) => {
+const Overlay = ({item, type, onClose, onDelete, films, actors}) => {
     if (!item) return null;
 
     const actorsDictionary = actors ? actors.reduce((acc, actor) => {
@@ -29,13 +29,23 @@ const Overlay = ({ item, type, onClose, onDelete, films, actors }) => {
                         {type === 'film' ? (
                             <>
                                 <p>{item.plot}</p>
+                                <p><strong>Year:</strong> {item.year}</p>
                                 <p><strong>Director:</strong> {item.director}</p>
-                                <p><strong>Starring:</strong> {item.actors.map(actor_id => actorsDictionary[actor_id]).join(', ')}</p>
+                                <div className="tags-container">
+                                    <p><strong>Genres:</strong> {item.genre.map(genre => <span key={genre}
+                                                                                               className="tag">{genre}</span>)}
+                                    </p>
+                                </div>
+                                <p>
+                                    <strong>Starring:</strong> {item.actors.map(actor_id => actorsDictionary[actor_id]).join(', ')}
+                                </p>
                             </>
                         ) : (
                             <>
                                 <p><strong>Birth Year:</strong> {item.birthYear}</p>
-                                <p><strong>Filmography:</strong> {item.filmography.map(film_id => filmsDictionary[film_id]).join(', ')}</p>
+                                <p>
+                                    <strong>Filmography:</strong> {item.filmography.map(film_id => filmsDictionary[film_id]).join(', ')}
+                                </p>
                             </>
                         )}
                         <button className="delete-button" onClick={handleDelete}>Delete</button>
