@@ -8,9 +8,11 @@ const predefinedGenres = [
     'Sport', 'Thriller', 'War', 'Western'
 ];
 
-const FloatingActionButton = ({ onAddFilm, onAddActor, existingFilms, existingActors }) => {
+const FloatingActionButton = ({ onAddFilm, onAddActor }) => {
     const [isFormVisible, setFormVisible] = useState(false);
     const [formType, setFormType] = useState('film'); // 'film' or 'actor'
+    const [existingFilms, setExistingFilms] = useState([]);
+    const [existingActors, setExistingActors] = useState([]);
 
     // Film form states
     const [title, setTitle] = useState('');
@@ -30,6 +32,16 @@ const FloatingActionButton = ({ onAddFilm, onAddActor, existingFilms, existingAc
     const [filmsInput, setFilmsInput] = useState('');
     const [filmography, setFilmography] = useState([]);
     const [photoUrl, setPhotoUrl] = useState('');
+
+    useEffect(() => {
+        fetch('http://localhost:5000/movies')
+            .then(response => response.json())
+            .then(data => setExistingFilms(data.map(film => film.title)));
+
+        fetch('http://localhost:5000/actors')
+            .then(response => response.json())
+            .then(data => setExistingActors(data.map(actor => actor.name)));
+    }, []);
 
     const handleAddFilm = () => {
         onAddFilm({ title, description, actors, director, genres, year, poster, horizontalPoster });

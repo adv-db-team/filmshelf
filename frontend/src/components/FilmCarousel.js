@@ -3,13 +3,15 @@ import '../styles/FilmCarousel.css';
 import Overlay from "./Overlay";
 
 const FilmCarousel = ({ films, actors, onDelete }) => {
+
     const [currentFilmIndex, setCurrentFilmIndex] = useState(0);
     const [selectedFilm, setSelectedFilm] = useState(null);
 
     const actorsDictionary = actors.reduce((acc, actor) => {
-        acc[actor.id] = actor.name;
+        acc[actor.actor_id] = actor.name;
         return acc;
     }, {});
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentFilmIndex((prevIndex) => (prevIndex + 1) % films.length);
@@ -30,23 +32,22 @@ const FilmCarousel = ({ films, actors, onDelete }) => {
         return null;
     }
 
-
     return (
         <div className="film-carousel">
             {films.map((film, index) => (
                 <div
-                    key={film.id}
+                    key={film.movie_id}
                     className="carousel-item"
                     style={{
                         transform: `translateX(${(index - currentFilmIndex) * 100}%)`,
-                        backgroundImage: `url(${film.horizontalPosterUrl})`
+                        backgroundImage: `url(${film.horizontal_poster_url})`
                     }}
                 >
                     <div className="carousel-text">
                         <div className="carousel-title">{film.title}</div>
                         <div className="carousel-description">{film.plot}</div>
                         <div className="carousel-credits">
-                            <span><strong>Starring:</strong> {film.actors.map(actor_id => actorsDictionary[actor_id]).join(', ')}</span>
+                            <span><strong>Starring:</strong> {film.actors.join(', ')}</span>
                             <span><strong>Director:</strong> {film.director}</span>
                         </div>
                         <div className="carousel-buttons">
