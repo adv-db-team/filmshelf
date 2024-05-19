@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/FloatingActionButton.css';
 
 const predefinedGenres = [
@@ -8,7 +8,7 @@ const predefinedGenres = [
     'Sport', 'Thriller', 'War', 'Western'
 ];
 
-const FloatingActionButton = ({onAddFilm, onAddActor}) => {
+const FloatingActionButton = ({ onAddFilm, onAddActor, existingFilms, existingActors }) => {
     const [isFormVisible, setFormVisible] = useState(false);
     const [formType, setFormType] = useState('film'); // 'film' or 'actor'
 
@@ -17,7 +17,8 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
     const [director, setDirector] = useState('');
     const [year, setYear] = useState('');
     const [description, setDescription] = useState('');
-    const [actors, setActors] = useState('');
+    const [actorsInput, setActorsInput] = useState('');
+    const [actors, setActors] = useState([]);
     const [genreInput, setGenreInput] = useState('');
     const [genres, setGenres] = useState([]);
     const [poster, setPosterUrl] = useState('');
@@ -26,29 +27,38 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
     // Actor form states
     const [name, setName] = useState('');
     const [birthYear, setBirthYear] = useState('');
-    const [filmography, setFilmography] = useState('');
+    const [filmsInput, setFilmsInput] = useState('');
+    const [filmography, setFilmography] = useState([]);
     const [photoUrl, setPhotoUrl] = useState('');
 
     const handleAddFilm = () => {
-        onAddFilm({title, description, actors: actors.split(','), director, genre: genres.join(', ')});
-        setTitle('');
-        setDirector('');
-        setYear('');
-        setGenres([]);
-        setActors('');
-        setDescription('');
-        setPosterUrl('');
-        setHorizontalPosterUrl('');
+        onAddFilm({ title, description, actors, director, genres, year, poster, horizontalPoster });
+        resetFilmForm();
         setFormVisible(false);
     };
 
     const handleAddActor = () => {
-        onAddActor({name, birthYear, filmography: filmography.split(','), photoUrl});
+        onAddActor({ name, birthYear, filmography: filmography.split(','), photoUrl });
+        resetActorForm();
+        setFormVisible(false);
+    };
+
+    const resetFilmForm = () => {
+        setTitle('');
+        setDirector('');
+        setYear('');
+        setGenres([]);
+        setActors([]);
+        setDescription('');
+        setPosterUrl('');
+        setHorizontalPosterUrl('');
+    };
+
+    const resetActorForm = () => {
         setName('');
         setBirthYear('');
-        setFilmography('');
+        setFilmography([]);
         setPhotoUrl('');
-        setFormVisible(false);
     };
 
     const handleAddGenre = (e) => {
@@ -63,6 +73,38 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
         setGenres(genres.filter(genre => genre !== genreToRemove));
     };
 
+    const handleAddActorTag = (e) => {
+        const actor = e.target.value;
+        if (actor && !actors.includes(actor)) {
+            setActors([...actors, actor]);
+            setActorsInput('');
+        }
+    };
+
+    const handleRemoveActor = (actorToRemove) => {
+        setActors(actors.filter(actor => actor !== actorToRemove));
+    };
+
+    const handleAddFilmTag = (e) => {
+        const film = e.target.value;
+        if (film && !filmography.includes(film)) {
+            setFilmography([...filmography, film]);
+            setFilmsInput('');
+        }
+    };
+
+    const handleRemoveFilm = (filmToRemove) => {
+        setFilmography(filmography.filter(film => film !== filmToRemove));
+    };
+
+    const isFilmFormValid = () => {
+        return title && director && year && description && actors.length > 0 && genres.length > 0 && poster;
+    };
+
+    const isActorFormValid = () => {
+        return name && birthYear && filmography && photoUrl;
+    };
+
     return (
         <div className={`fab-container ${isFormVisible ? 'expanded' : ''}`}>
             <div className="fab" onClick={() => setFormVisible(!isFormVisible)}>
@@ -71,12 +113,8 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
             {isFormVisible && (
                 <div className="form-container">
                     <div className="form-toggle">
-                        <button onClick={() => setFormType('film')} className={formType === 'film' ? 'active' : ''}>Add
-                            Film
-                        </button>
-                        <button onClick={() => setFormType('actor')}
-                                className={formType === 'actor' ? 'active' : ''}>Add Actor
-                        </button>
+                        <button onClick={() => setFormType('film')} className={formType === 'film' ? 'active' : ''}>Add Film</button>
+                        <button onClick={() => setFormType('actor')} className={formType === 'actor' ? 'active' : ''}>Add Actor</button>
                     </div>
                     {formType === 'film' ? (
                         <div className="film-form">
@@ -105,7 +143,6 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
                                     {predefinedGenres.map(genre => (
                                         <option key={genre} value={genre}>{genre}</option>
                                     ))}
-                                    <option value={genreInput}>{genreInput}</option>
                                 </select>
                             </div>
                             <div className="tags-container">
@@ -115,12 +152,21 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
                                     </span>
                                 ))}
                             </div>
-                            <input
-                                type="text"
-                                placeholder="Actors (comma-separated)"
-                                value={actors}
-                                onChange={e => setActors(e.target.value)}
-                            />
+                            <div className="dropdown">
+                                <select onChange={handleAddActorTag} value={actorsInput}>
+                                    <option value="" disabled>Select actor</option>
+                                    {existingActors.map(actor => (
+                                        <option key={actor} value={actor}>{actor}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="tags-container">
+                                {actors.map(actor => (
+                                    <span key={actor} className="tag" onClick={() => handleRemoveActor(actor)}>
+                                        {actor} ✖
+                                    </span>
+                                ))}
+                            </div>
                             <input
                                 type="text"
                                 placeholder="Poster URL"
@@ -129,7 +175,7 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
                             />
                             <input
                                 type="text"
-                                placeholder="Horizontal poster URL"
+                                placeholder="Horizontal poster URL (optional)"
                                 value={horizontalPoster}
                                 onChange={e => setHorizontalPosterUrl(e.target.value)}
                             />
@@ -138,7 +184,8 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
                                 value={description}
                                 onChange={e => setDescription(e.target.value)}
                             />
-                            <button onClick={handleAddFilm}>Add Film</button>
+                            <button onClick={handleAddFilm} disabled={!isFilmFormValid()}>Add Film</button>
+                            <button onClick={resetFilmForm} className="clear-button">Clear</button>
                         </div>
                     ) : (
                         <div className="actor-form">
@@ -155,19 +202,29 @@ const FloatingActionButton = ({onAddFilm, onAddActor}) => {
                                 value={birthYear}
                                 onChange={e => setBirthYear(e.target.value)}
                             />
-                            <input
-                                type="text"
-                                placeholder="Filmography (comma-separated)"
-                                value={filmography}
-                                onChange={e => setFilmography(e.target.value)}
-                            />
+                            <div className="dropdown">
+                                <select onChange={handleAddFilmTag} value={filmsInput}>
+                                    <option value="" disabled>Select film</option>
+                                    {existingFilms.map(film => (
+                                        <option key={film} value={film}>{film}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="tags-container">
+                                {filmography.map(film => (
+                                    <span key={film} className="tag" onClick={() => handleRemoveFilm(film)}>
+                                        {film} ✖
+                                    </span>
+                                ))}
+                            </div>
                             <input
                                 type="text"
                                 placeholder="Photo URL"
                                 value={photoUrl}
                                 onChange={e => setPhotoUrl(e.target.value)}
                             />
-                            <button onClick={handleAddActor}>Add Actor</button>
+                            <button onClick={handleAddActor} disabled={!isActorFormValid()}>Add Actor</button>
+                            <button onClick={resetActorForm} className="clear-button">Clear</button>
                         </div>
                     )}
                 </div>

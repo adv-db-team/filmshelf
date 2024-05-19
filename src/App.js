@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import FilmCarousel from './components/FilmCarousel';
 import FilmList from './components/FilmList';
-import AddFilm from './components/AddFilm';
 import './styles/App.css';
 import FloatingActionButton from "./components/FloatingActionButton";
 import ActorList from "./components/ActorList";
@@ -64,16 +63,15 @@ const App = () => {
               <>
                 <FilmCarousel films={shuffle(films).slice(0, 5)} actors={actors} onDelete={handleDeleteFilm} />
                 <FilmList films={films} actors={actors} onDelete={handleDeleteFilm}/>
-                <FloatingActionButton onAddFilm={handleAddFilm} />
+                <FloatingActionButton existingFilms={films.map((film) => film.title)} existingActors={actors.map((actor) => actor.name)} onAddFilm={handleAddFilm} onAddActor={handleAddActor} />
               </>
             } />
             <Route path="/actors-list" element={
               <>
                 <ActorList actors={actors} films={films} onDelete={handleDeleteActor} />
-                <FloatingActionButton onAddActor={handleAddActor} />
+                <FloatingActionButton existingActors={actors.map((actor) => actor.name)} existingFilms={films.map((film) => film.title)} onAddFilm={handleAddFilm} onAddActor={handleAddActor} />
               </>
             } />
-            <Route path="/add-film" element={<AddFilm onAddFilm={handleAddFilm} />} />
           </Routes>
         </div>
       </Router>

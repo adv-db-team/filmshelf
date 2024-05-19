@@ -32,6 +32,7 @@
     bottom: 80px;
     right: 0;
     width: 300px;
+    max-height: 400px; /* Smaller height */
     padding: 20px;
     background-color: #333;
     color: #fff;
@@ -42,15 +43,15 @@
 }
 
 .form-container h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 20px; /* Smaller font size */
+    margin-bottom: 10px; /* Smaller margin */
 }
 
 .form-container input,
 .form-container textarea {
     width: 95%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 8px; /* Smaller padding */
+    margin-bottom: 8px; /* Smaller margin */
     border: none;
     border-radius: 5px;
 }
@@ -62,25 +63,32 @@
     border-radius: 5px;
     background-color: #ff5733;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px; /* Smaller font size */
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.form-container button:hover {
+.form-container button:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
+
+.form-container button:hover:not(:disabled) {
     background-color: #e04c2e;
 }
 
 .form-toggle {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* Smaller margin */
+    border-bottom: 2px solid #ff5733; /* Border to create a tab-like look */
 }
 
 .form-toggle button {
     width: 48%;
     padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0; /* Rounded corners on top */
     background-color: #444;
     color: #fff;
     cursor: pointer;
@@ -96,12 +104,12 @@
 }
 
 .dropdown {
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* Smaller margin */
 }
 
 .dropdown select {
     width: 100%;
-    padding: 10px;
+    padding: 8px; /* Smaller padding */
     border: none;
     border-radius: 5px;
     background-color: #444;
@@ -111,16 +119,16 @@
 .tags-container {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 10px;
+    margin-top: 8px; /* Smaller margin */
 }
 
 .tag {
-    background-color: #555; /* Less bright */
-    color: #ddd; /* Less bright */
-    padding: 3px 6px; /* Smaller padding */
-    font-size: 12px; /* Smaller font size */
-    border-radius: 3px; /* Smaller border radius */
-    margin: 3px; /* Smaller margin */
+    background-color: #555;
+    color: #ddd;
+    padding: 3px 6px;
+    font-size: 12px;
+    border-radius: 3px;
+    margin: 3px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -128,4 +136,13 @@
 
 .tag:hover {
     background-color: #e04c2e;
+}
+
+.clear-button {
+    margin-top: 5px;
+    background-color: #999;
+}
+
+.clear-button:hover {
+    background-color: #777;
 }
