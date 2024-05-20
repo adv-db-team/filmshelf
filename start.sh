@@ -1,9 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
 # Start the Flask backend using waitress
-cd /backend
-waitress-serve --host=0.0.0.0 --port=5000 app:app &
+cd /app/backend
 
-# Start the React frontend using serve
-cd /frontend/build
-serve -s . -l 3000 --no-clipboard
+source venv/bin/activate
+export FLASK_APP=app.py
+flask run --host=0.0.0.0 --port=5000 & flask_pid=$!
+
+# Start the frontend
+cd /app/frontend
+npm start & npm_pid=$!
+
+wait $npm_pid
+kill $flask_pid
