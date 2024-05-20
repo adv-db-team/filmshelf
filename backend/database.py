@@ -21,4 +21,8 @@ def init_db():
     # Create indices
     db.engine.execute('CREATE INDEX IF NOT EXISTS idx_title_year ON movies (title, year)')
     db.engine.execute('CREATE INDEX IF NOT EXISTS idx_actor_name ON actors (name)')
-    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_movie_actor ON movies_actors (actor_id, movie_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_actor_id ON movies_actors (actor_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_movie_a_id ON movies_actors (movie_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_genre ON genres (title)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_movie_g_id ON movies_genres (movie_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_genre_id ON movies_actors (genre_id)')
