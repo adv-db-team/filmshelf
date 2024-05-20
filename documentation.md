@@ -4,7 +4,7 @@ The FilmShelf project is an educational application designed to manage a collect
 
 Source code for the project is available on GitHub: [FilmShelf](https://github.com/adv-db-team/filmshelf)
 
-Link to the website: <insert_link>
+Link to the website: https://oyster-app-s25ba.ondigitalocean.app
 
 Local deployment manual is available in the [README.md](README.md) file.
 
@@ -35,7 +35,11 @@ from models import Movie, Actor, MovieActor
     # Create indices
     db.engine.execute('CREATE INDEX IF NOT EXISTS idx_title_year ON movies (title, year)')
     db.engine.execute('CREATE INDEX IF NOT EXISTS idx_actor_name ON actors (name)')
-    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_movie_actor ON movies_actors (actor_id, movie_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_actor_id ON movies_actors (actor_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_movie_a_id ON movies_actors (movie_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_genre ON genres (title)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_movie_g_id ON movies_genres (movie_id)')
+    db.engine.execute('CREATE INDEX IF NOT EXISTS idx_genre_id ON movies_actors (genre_id)')
 ```
 
 #### Queries
