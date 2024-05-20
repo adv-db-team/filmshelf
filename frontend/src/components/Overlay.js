@@ -49,7 +49,7 @@ const Overlay = ({ item, type, onClose, onDelete }) => {
                         <h2>{type === 'film' ? item.title : item.name}</h2>
                         {type === 'film' ? (
                             <>
-                                <p>{item.plot}</p>
+                                <p>{item.description}</p>
                                 <p><strong>Year:</strong> {item.year}</p>
                                 <p><strong>Director:</strong> <span className="tag" onClick={() => handleActorDirectorClick(item.director)}>{item.director}</span></p>
                                 <div className="tags-container">

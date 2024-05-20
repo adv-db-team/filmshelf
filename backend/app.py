@@ -39,7 +39,7 @@ def search():
         elif query.startswith('starring:'):
             search_query = query.replace('starring:', '').strip()
             actors = session.query(Actor).filter(Actor.name.ilike(f'%{search_query}%')).all()
-            actor_ids = [actor.actor_id for actor in actors]
+            actor_ids = [actor.id for actor in actors]
             movies = session.query(Movie).join(MovieActor).filter(MovieActor.actor_id.in_(actor_ids)).all()
         elif query.startswith('film-genre:'):
             search_query = query.replace('film-genre:', '').strip()
@@ -55,8 +55,8 @@ def search():
         movies_with_actors = []
         for movie in movies:
             movie_dict = movie.to_dict()
-            actors = session.query(Actor).join(MovieActor, Actor.actor_id == MovieActor.actor_id).filter(
-                MovieActor.movie_id == movie.movie_id).all()
+            actors = session.query(Actor).join(MovieActor, Actor.id == MovieActor.actor_id).filter(
+                MovieActor.movie_id == movie.id).all()
             movie_dict['actors'] = [actor.name for actor in actors]
             movies_with_actors.append(movie_dict)
 
@@ -85,9 +85,10 @@ def add_movie():
     rating = data.get('rating')
     director = data.get('director')
     image_url = data.get('image_url')
+    description = data.get('description')
 
     with session_scope() as session:
-        new_movie = Movie(title=title, year=year, rating=rating, director=director, image_url=image_url)
+        new_movie = Movie(title=title, year=year, rating=rating, director=director, image_url=image_url, description=description)
         session.add(new_movie)
         session.commit()
 
@@ -98,7 +99,7 @@ def add_movie():
                 genre = Genre(name=genre_name)
                 session.add(genre)
                 session.commit()
-            movie_genre = MovieGenre(movie_id=new_movie.movie_id, genre_id=genre.id)
+            movie_genre = MovieGenre(movie_id=new_movie.id, genre_id=genre.id)
             session.add(movie_genre)
             session.commit()
 
@@ -181,19 +182,19 @@ def delete_horizontal_poster(movie_id):
 def get_movies_with_horizontal_posters():
     with session_scope() as session:
         results = session.query(Movie, HorizontalPoster).join(HorizontalPoster,
-                                                              Movie.movie_id == HorizontalPoster.movie_id).all()
+                                                              Movie.id == HorizontalPoster.movie_id).all()
         movies_with_posters = []
 
         for movie, poster in results:
             movie_dict = movie.to_dict()
             movie_dict['horizontal_poster_url'] = poster.horizontal_poster_url
 
-            actors = session.query(Actor).join(MovieActor, Actor.actor_id == MovieActor.actor_id).filter(
-                MovieActor.movie_id == movie.movie_id).all()
+            actors = session.query(Actor).join(MovieActor, Actor.id == MovieActor.actor_id).filter(
+                MovieActor.movie_id == movie.id).all()
             movie_dict['actors'] = [actor.name for actor in actors]
 
             genres = session.query(Genre).join(MovieGenre, Genre.id == MovieGenre.genre_id).filter(
-                MovieGenre.movie_id == movie.movie_id).all()
+                MovieGenre.movie_id == movie.id).all()
             movie_dict['genres'] = [genre.title for genre in genres]
 
             movies_with_posters.append(movie_dict)
@@ -204,16 +205,16 @@ def get_movies_with_horizontal_posters():
 @app.route('/movies_with_actors', methods=['GET'])
 def get_movies_with_actors():
     with session_scope() as session:
-        results = session.query(Movie, Actor).outerjoin(MovieActor, Movie.movie_id == MovieActor.movie_id).outerjoin(
-            Actor, MovieActor.actor_id == Actor.actor_id).all()
+        results = session.query(Movie, Actor).outerjoin(MovieActor, Movie.id == MovieActor.movie_id).outerjoin(
+            Actor, MovieActor.actor_id == Actor.id).all()
 
         movies = {}
         for movie, actor in results:
-            if movie.movie_id not in movies:
-                movies[movie.movie_id] = movie.to_dict()
-                movies[movie.movie_id]['actors'] = []
+            if movie.id not in movies:
+                movies[movie.id] = movie.to_dict()
+                movies[movie.id]['actors'] = []
             if actor:
-                movies[movie.movie_id]['actors'].append(actor.name)
+                movies[movie.id]['actors'].append(actor.name)
 
         return jsonify(list(movies.values()))
 
@@ -221,7 +222,7 @@ def get_movies_with_actors():
 @app.route('/actor/<int:actor_id>/movies', methods=['GET'])
 def get_films_for_actor(actor_id):
     with session_scope() as session:
-        films = session.query(Movie.title).join(MovieActor, Movie.movie_id == MovieActor.movie_id).filter(
+        films = session.query(Movie.title).join(MovieActor, Movie.id == MovieActor.movie_id).filter(
             MovieActor.actor_id == actor_id).all()
         film_titles = [film.title for film in films]
         return jsonify(film_titles)

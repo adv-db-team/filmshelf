@@ -8,7 +8,7 @@ class Movie(db.Model):
     rating = db.Column(db.Numeric(3, 2))
     director = db.Column(db.String(256))
     image_url = db.Column(db.String(512))
-#     description = db.Column(db.String(256))
+    description = db.Column(db.String(512))
     __table_args__ = (db.UniqueConstraint('title', 'year', 'director', name='_title_year_director_uc'),)
 
     def to_dict(self):
@@ -18,7 +18,8 @@ class Movie(db.Model):
             'year': self.year,
             'rating': str(self.rating),
             'director': self.director,
-            'image_url': self.image_url
+            'image_url': self.image_url,
+            'description': self.description
         }
 
 class Actor(db.Model):

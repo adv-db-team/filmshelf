@@ -2,7 +2,6 @@
 
 # Start the Flask backend using waitress
 cd /backend
-/bin/sh
 waitress-serve --host=0.0.0.0 --port=5000 app:app &
 
 # Start the React frontend using serve

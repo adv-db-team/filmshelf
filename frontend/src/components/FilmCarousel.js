@@ -40,7 +40,7 @@ const FilmCarousel = ({ films, actors, onDelete }) => {
                 >
                     <div className="carousel-text">
                         <div className="carousel-title">{film.title}</div>
-                        <div className="carousel-description">{film.plot}</div>
+                        <div className="carousel-description">{film.description}</div>
                         <div className="carousel-credits">
                             <span><strong>Starring:</strong> {film.actors.join(', ')}</span>
                             <span><strong>Director:</strong> {film.director}</span>
