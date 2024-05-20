@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from models import db, Movie, Actor, MovieActor, HorizontalPoster
 from database import create_app, init_db
+from sqlalchemy.exc import IntegrityError
 
 app = create_app()
 CORS(app)  # Enable CORS for all routes
@@ -19,9 +20,14 @@ def add_movie():
     rating = data.get('rating')
     director = data.get('director')
     new_movie = Movie(title=title, year=year, rating=rating, director=director)
-    db.session.add(new_movie)
-    db.session.commit()
-    return jsonify(new_movie.to_dict()), 201
+
+    try:
+        db.session.add(new_movie)
+        db.session.commit()
+        return jsonify(new_movie.to_dict()), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'error': 'An error occurred while adding the movie'}), 500
 
 @app.route('/actors', methods=['GET'])
 def get_actors():
@@ -33,26 +39,39 @@ def add_actor():
     data = request.get_json()
     name = data.get('name')
     new_actor = Actor(name=name)
-    db.session.add(new_actor)
-    db.session.commit()
-    return jsonify(new_actor.to_dict()), 201
+
+    try:
+        db.session.add(new_actor)
+        db.session.commit()
+        return jsonify(new_actor.to_dict()), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'error': 'An error occurred while adding the actor'}), 500
 
 @app.route('/movie/<int:movie_id>', methods=['DELETE'])
 def delete_movie(movie_id):
     movie = Movie.query.get(movie_id)
     if movie:
-        db.session.delete(movie)
-        db.session.commit()
-        return '', 204
+        try:
+            db.session.delete(movie)
+            db.session.commit()
+            return '', 204
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'error': 'An error occurred while deleting the movie'}), 500
     return jsonify({'error': 'Movie not found'}), 404
 
 @app.route('/actor/<int:actor_id>', methods=['DELETE'])
 def delete_actor(actor_id):
     actor = Actor.query.get(actor_id)
     if actor:
-        db.session.delete(actor)
-        db.session.commit()
-        return '', 204
+        try:
+            db.session.delete(actor)
+            db.session.commit()
+            return '', 204
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'error': 'An error occurred while deleting the actor'}), 500
     return jsonify({'error': 'Actor not found'}), 404
 
 @app.route('/horizontal_posters', methods=['GET'])
@@ -66,17 +85,26 @@ def add_horizontal_poster():
     movie_id = data.get('movie_id')
     horizontal_poster_url = data.get('horizontal_poster_url')
     new_poster = HorizontalPoster(movie_id=movie_id, horizontal_poster_url=horizontal_poster_url)
-    db.session.add(new_poster)
-    db.session.commit()
-    return jsonify(new_poster.to_dict()), 201
+
+    try:
+        db.session.add(new_poster)
+        db.session.commit()
+        return jsonify(new_poster.to_dict()), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({'error': 'An error occurred while adding the horizontal poster'}), 500
 
 @app.route('/horizontal_poster/<int:movie_id>', methods=['DELETE'])
 def delete_horizontal_poster(movie_id):
     poster = HorizontalPoster.query.get(movie_id)
-    if poster:
-        db.session.delete(poster)
-        db.session.commit()
-        return '', 204
+    if (poster):
+        try:
+            db.session.delete(poster)
+            db.session.commit()
+            return '', 204
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'error': 'An error occurred while deleting the horizontal poster'}), 500
     return jsonify({'error': 'Poster not found'}), 404
 
 @app.route('/movies_with_horizontal_posters', methods=['GET'])
