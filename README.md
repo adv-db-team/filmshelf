@@ -4,6 +4,9 @@ To run current version locally, clone current branch of repository and run the f
 
 Note: to execute the following command, make sure you have the following installed:
  - npm
+ - Node.js
+ - sqlite3
+ - python3
 
 Run the following command to install all dependencies:
 
