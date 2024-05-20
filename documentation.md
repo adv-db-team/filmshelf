@@ -13,11 +13,12 @@ Local deployment manual is available in the [README.md](README.md) file.
 ### Database Design and Implementation
 #### Schema Design
 
-The database schema is designed to manage movies, actors and genres. The main tables include:
+The database schema is designed to manage movies, actors, genres and posters. The main tables include:
 
  - movies: Stores information about films.
  - actors: Stores information about actors in film.
  - genres: Stores various film genres.
+ - horizontal_posters: Stores posters for films.
 
 The relationships are as follows:
 
@@ -65,15 +66,17 @@ genres = session.query(Genre.title).join(MovieGenre, Genre.id == MovieGenre.genr
 
 The frontend is developed using React.js, providing a user-friendly interface for managing films. Key features include:
 
- - Film listing and search.
- - Add, update, and delete film records.
+ - Film listing and search: find films by title, genre, director and actors.
+ - Actors listing and search: find actors by name.
+ - Add and delete film records.
+ - Add and delete actor records.
  - View film details and starring actors.
 
 #### Backend
 
-The backend is developed using Node.js. It handles API requests, manages database connections, and ensures data consistency and security.
+The backend is developed using Flask. It handles API requests, manages database connections, and ensures data consistency and security.
 
-#### Key Endpoints
+#### Examples of queries to DB with RestAPI:
 
  - GET /movie: Retrieve all films.
  - GET /movie/<int:movie_id>: Retrieve a film by ID.
@@ -126,9 +129,6 @@ filmshelf/
 ├── frontend/
 │   ├── src/
 │   └── public/
-│
-├── db/
-│   └── db.json
 │
 ├── README.md
 └── documentation.md
