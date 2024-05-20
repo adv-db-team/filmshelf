@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../styles/Navbar.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const Navbar = ({ onSearch, pageName }) => {
+const Navbar = ({ onSearch }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [query, setQuery] = useState('');
@@ -34,13 +34,13 @@ const Navbar = ({ onSearch, pageName }) => {
 
     const handleSearch = () => {
         if (query.startsWith('actor-name:')) {
-            if (!pageName.endsWith('/actors-list')) {
+            if (!location.pathname.endsWith('/actors-list')) {
                 navigate('/actors-list', { state: { query } });
             } else {
                 onSearch(query);
             }
         } else {
-            if (!pageName.endsWith('/')) {
+            if (!location.pathname.endsWith('/')) {
                 navigate('/', { state: { query } });
             } else {
                 onSearch(query);
@@ -59,7 +59,7 @@ const Navbar = ({ onSearch, pageName }) => {
         setQuery('');
         setSuggestions([]);
         inputRef.current.focus();
-        navigate(pageName, { state: { query: '' } })
+        navigate(location.pathname, { state: { query: '' } })
     };
 
     return (
