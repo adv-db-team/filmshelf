@@ -156,7 +156,7 @@ def get_horizontal_posters():
 @app.route('/horizontal_poster', methods=['POST'])
 def add_horizontal_poster():
     data = request.get_json()
-    movie_id = data.get('movie_id')
+    id = data.get('id')
     horizontal_poster_url = data.get('horizontal_poster_url')
 
     with session_scope() as session:

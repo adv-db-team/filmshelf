@@ -1,5 +1,4 @@
 Flask
-SQLAlchemy
 Flask-CORS
-flask-sqlalchemy
-
+Flask-SQLAlchemy
+waitress

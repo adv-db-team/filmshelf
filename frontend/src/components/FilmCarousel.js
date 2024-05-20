@@ -31,7 +31,7 @@ const FilmCarousel = ({ films, actors, onDelete }) => {
         <div className="film-carousel">
             {films.map((film, index) => (
                 <div
-                    key={film.movie_id}
+                    key={film.id}
                     className="carousel-item"
                     style={{
                         transform: `translateX(${(index - currentFilmIndex) * 100}%)`,

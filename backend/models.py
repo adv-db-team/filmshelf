@@ -2,7 +2,7 @@ from database import db
 
 class Movie(db.Model):
     __tablename__ = 'movies'
-    movie_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(256))
     year = db.Column(db.Integer)
     rating = db.Column(db.Numeric(3, 2))
@@ -13,7 +13,7 @@ class Movie(db.Model):
 
     def to_dict(self):
         return {
-            'movie_id': self.movie_id,
+            'id': self.id,
             'title': self.title,
             'year': self.year,
             'rating': str(self.rating),
@@ -23,14 +23,14 @@ class Movie(db.Model):
 
 class Actor(db.Model):
     __tablename__ = 'actors'
-    actor_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(256), unique=True)
     image_url = db.Column(db.String(512))
     __table_args__ = (db.UniqueConstraint('name',  name='_name_uc'),)
 
     def to_dict(self):
         return {
-            'actor_id': self.actor_id,
+            'id': self.id,
             'name': self.name,
             'image_url': self.image_url
         }
@@ -38,8 +38,8 @@ class Actor(db.Model):
 class MovieActor(db.Model):
     __tablename__ = 'movies_actors'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    actor_id = db.Column(db.Integer, db.ForeignKey('actors.actor_id'))
-    movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
+    actor_id = db.Column(db.Integer, db.ForeignKey('actors.id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
     __table_args__ = (db.UniqueConstraint('actor_id', 'movie_id', name='_actor_movie_uc'),)
 
     def to_dict(self):
@@ -74,7 +74,7 @@ class Genre(db.Model):
 class MovieGenre(db.Model):
     __tablename__ = 'movies_genres'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movies.movie_id'))
+    movie_id = db.Column(db.Integer, db.ForeignKey('movies.id'))
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
     __table_args__ = (db.UniqueConstraint('movie_id', 'genre_id', name='_movie_genre_uc'),)
 

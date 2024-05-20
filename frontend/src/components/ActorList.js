@@ -25,7 +25,7 @@ const ActorList = ({ onDelete, searchQuery }) => {
             <h2>Actors</h2>
             <ul>
                 {actors.map(actor => (
-                    <li className="actor-link" key={actor.actor_id} onClick={() => setSelectedActor(actor)}>
+                    <li className="actor-link" key={actor.id} onClick={() => setSelectedActor(actor)}>
                         <img src={actor.image_url} alt={actor.name} />
                         <div className="actor-info">
                             <h3>{actor.name}</h3>

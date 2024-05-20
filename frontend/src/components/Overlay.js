@@ -7,11 +7,11 @@ const Overlay = ({ item, type, onClose, onDelete }) => {
 
     useEffect(() => {
         if (type === 'actor') {
-            fetch(`http://localhost:5000/actor/${item.actor_id}/movies`)
+            fetch(`http://localhost:5000/actor/${item.id}/movies`)
                 .then(response => response.json())
                 .then(data => setActorsFilms(data));
         } else if (type === 'film') {
-            fetch(`http://localhost:5000/movie/${item.movie_id}/genres`)
+            fetch(`http://localhost:5000/movie/${item.id}/genres`)
                 .then(response => response.json())
                 .then(data => setFilmGenres(data));
         }
@@ -20,7 +20,7 @@ const Overlay = ({ item, type, onClose, onDelete }) => {
     if (!item) return null;
 
     const handleDelete = () => {
-        onDelete(item.movie_id || item.actor_id);
+        onDelete(item.id || item.id);
         onClose();
     };
 

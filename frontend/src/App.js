@@ -74,7 +74,7 @@ const App = () => {
         fetch(`http://localhost:5000/movie/${filmId}`, {
             method: 'DELETE'
         }).then(() => {
-            setFilms(films.filter(film => film.movie_id !== filmId));
+            setFilms(films.filter(film => film.id !== filmId));
         });
     };
 
@@ -82,7 +82,7 @@ const App = () => {
         fetch(`http://localhost:5000/actor/${actorId}`, {
             method: 'DELETE'
         }).then(() => {
-            setActors(actors.filter(actor => actor.actor_id !== actorId));
+            setActors(actors.filter(actor => actor.id !== actorId));
         });
     };
 
