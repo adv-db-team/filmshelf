@@ -24,6 +24,22 @@ const Overlay = ({ item, type, onClose, onDelete }) => {
         onClose();
     };
 
+    const handleGenreClick = (genre) => {
+        fetch(`http://localhost:5000/search?query=${genre}&type=genre`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // You can update the state or handle the data as needed
+            });
+    };
+
+    const handleActorDirectorClick = (name) => {
+        fetch(`http://localhost:5000/search?query=${name}&type=actor`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // You can update the state or handle the data as needed
+            });
+    };
+
     return (
         <div className="overlay">
             <div className="overlay-content">
@@ -35,11 +51,11 @@ const Overlay = ({ item, type, onClose, onDelete }) => {
                             <>
                                 <p>{item.plot}</p>
                                 <p><strong>Year:</strong> {item.year}</p>
-                                <p><strong>Director:</strong> {item.director}</p>
+                                <p><strong>Director:</strong> <span className="tag" onClick={() => handleActorDirectorClick(item.director)}>{item.director}</span></p>
                                 <div className="tags-container">
-                                    <p><strong>Genres:</strong> {filmGenres.map(genre => <span key={genre} className="tag">{genre}</span>)}</p>
+                                    <p><strong>Genres:</strong> {filmGenres.map(genre => <span key={genre} className="tag" onClick={() => handleGenreClick(genre)}>{genre}</span>)}</p>
                                 </div>
-                                <p><strong>Starring:</strong> {item.actors.join(', ')}</p>
+                                <p><strong>Starring:</strong> {item.actors.map(actor => <span key={actor} className="tag" onClick={() => handleActorDirectorClick(actor)}>{actor}</span>)}</p>
                             </>
                         ) : (
                             <>

@@ -2,15 +2,23 @@ import React, { useEffect, useState } from 'react';
 import '../styles/ActorList.css';
 import Overlay from "./Overlay";
 
-const ActorList = ({ onDelete }) => {
+const ActorList = ({ onDelete, searchQuery }) => {
     const [actors, setActors] = useState([]);
     const [selectedActor, setSelectedActor] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/actors')
-            .then(response => response.json())
-            .then(data => setActors(data));
-    }, []);
+        const fetchActors = () => {
+            let url = 'http://localhost:5000/actors';
+            if (searchQuery) {
+                url = `http://localhost:5000/search?query=${searchQuery}`;
+            }
+            fetch(url)
+                .then(response => response.json())
+                .then(data => setActors(data));
+        };
+
+        fetchActors();
+    }, [searchQuery]);
 
     return (
         <div className="actor-list">

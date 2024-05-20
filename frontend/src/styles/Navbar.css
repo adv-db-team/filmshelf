@@ -1,3 +1,4 @@
+/* Navbar.css */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -7,6 +8,7 @@
     color: #fff;
     font-size: 18px;
     height: 80px;
+    position: relative;
 }
 
 .nav-link {
@@ -23,22 +25,69 @@
 .navbar .logo {
     padding-left: 20px;
     font-size: 24px;
-    color: #ff5733;
+    color: #fff9f9;
     font-weight: bold;
 }
 
+.nav-link a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.nav-link.active a {
+    color: #ff5733;
+}
+
 .search-bar {
-    padding-right: 20px;
+    position: relative;
     display: flex;
     justify-content: center;
     background-color: #333;
-    width: 23%;
+    width: 25%;
 }
 
 .search-bar input {
-    width: 100%;
-    max-width: 600px;
-    padding: 10px;
+    width: 60%;
+    padding: 5px;
     border: none;
-    border-radius: 5px;
+    border-radius: 3px;
+}
+
+.search-bar button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    background-color: #555;
+    color: white;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.suggestions-list {
+    position: absolute;
+    top: calc(100% + 5px); /* Adjust this to position right below the search bar */
+    left: 0;
+    width: 60%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 0 0;
+}
+
+.suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+    color: #222222;
+    font-size: 13px;
+}
+
+.suggestions-list li:hover {
+    background-color: #eee;
 }

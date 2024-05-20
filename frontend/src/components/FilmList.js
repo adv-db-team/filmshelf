@@ -2,15 +2,23 @@ import React, { useEffect, useState } from 'react';
 import '../styles/FilmList.css';
 import Overlay from "./Overlay";
 
-const FilmList = ({ onDelete }) => {
+const FilmList = ({ onDelete, searchQuery }) => {
     const [films, setFilms] = useState([]);
     const [selectedFilm, setSelectedFilm] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/movies_with_actors')
-            .then(response => response.json())
-            .then(data => setFilms(data));
-    }, []);
+        const fetchFilms = () => {
+            let url = 'http://localhost:5000/movies_with_actors';
+            if (searchQuery) {
+                url = `http://localhost:5000/search?query=${searchQuery}`;
+            }
+            fetch(url)
+                .then(response => response.json())
+                .then(data => setFilms(data));
+        };
+
+        fetchFilms();
+    }, [searchQuery]);
 
     return (
         <div className="film-list">
@@ -21,7 +29,6 @@ const FilmList = ({ onDelete }) => {
                         <img src={film.image_url} alt={film.title} />
                         <div className="film-info">
                             <h3>{film.title}</h3>
-                            {/*<p>{film.plot}</p>*/}
                         </div>
                     </li>
                 ))}

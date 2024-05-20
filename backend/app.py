@@ -6,6 +6,46 @@ from database import create_app, init_db
 app = create_app()
 CORS(app)
 
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query')
+    if not query:
+        return jsonify({'error': 'No query provided'}), 400
+
+    if query.startswith('actor-name:'):
+        search_query = query.replace('actor-name:', '').strip()
+        actors = Actor.query.filter(Actor.name.ilike(f'%{search_query}%')).all()
+        return jsonify([actor.to_dict() for actor in actors])
+
+    if query.startswith('film-title:'):
+            search_query = query.replace('film-title:', '').strip()
+            movies = Movie.query.filter(Movie.title.ilike(f'%{search_query}%')).all()
+    elif query.startswith('starring:'):
+        search_query = query.replace('starring:', '').strip()
+        actors = Actor.query.filter(Actor.name.ilike(f'%{search_query}%')).all()
+        actor_ids = [actor.actor_id for actor in actors]
+        movies = db.session.query(Movie).join(MovieActor).filter(MovieActor.actor_id.in_(actor_ids)).all()
+    elif query.startswith('film-genre:'):
+        search_query = query.replace('film-genre:', '').strip()
+        genres = Genre.query.filter(Genre.title.ilike(f'%{search_query}%')).all()
+        genre_ids = [genre.id for genre in genres]
+        movies = db.session.query(Movie).join(MovieGenre).filter(MovieGenre.genre_id.in_(genre_ids)).all()
+    elif query.startswith('film-director:'):
+        search_query = query.replace('film-director:', '').strip()
+        movies = Movie.query.filter(Movie.director.ilike(f'%{search_query}%')).all()
+    else:
+        return jsonify({'error': 'Invalid search type'}), 400
+
+    movies_with_actors = []
+    for movie in movies:
+        movie_dict = movie.to_dict()
+        actors = db.session.query(Actor).join(MovieActor, Actor.actor_id == MovieActor.actor_id).filter(MovieActor.movie_id == movie.movie_id).all()
+        movie_dict['actors'] = [actor.name for actor in actors]
+        movies_with_actors.append(movie_dict)
+
+    return jsonify(movies_with_actors)
+
 @app.route('/genres', methods=['GET'])
 def get_genres():
     genres = Genre.query.all()
