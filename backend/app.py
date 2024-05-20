@@ -1,10 +1,15 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from models import db, Movie, Actor, MovieActor, HorizontalPoster
+from models import db, Movie, Actor, MovieActor, HorizontalPoster, Genre, MovieGenre
 from database import create_app, init_db
 
 app = create_app()
-CORS(app)  # Enable CORS for all routes
+CORS(app)
+
+@app.route('/genres', methods=['GET'])
+def get_genres():
+    genres = Genre.query.all()
+    return jsonify([genre.to_dict() for genre in genres])
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
@@ -18,9 +23,23 @@ def add_movie():
     year = data.get('year')
     rating = data.get('rating')
     director = data.get('director')
-    new_movie = Movie(title=title, year=year, rating=rating, director=director)
+    image_url = data.get('image_url')
+    new_movie = Movie(title=title, year=year, rating=rating, director=director, image_url=image_url)
     db.session.add(new_movie)
     db.session.commit()
+
+    # Add genres
+    genres = data.get('genres', [])
+    for genre_name in genres:
+        genre = Genre.query.filter_by(name=genre_name).first()
+        if genre is None:
+            genre = Genre(name=genre_name)
+            db.session.add(genre)
+            db.session.commit()
+        movie_genre = MovieGenre(movie_id=new_movie.movie_id, genre_id=genre.id)
+        db.session.add(movie_genre)
+        db.session.commit()
+
     return jsonify(new_movie.to_dict()), 201
 
 @app.route('/actors', methods=['GET'])
@@ -91,22 +110,41 @@ def get_movies_with_horizontal_posters():
         actors = db.session.query(Actor).join(MovieActor, Actor.actor_id == MovieActor.actor_id).filter(MovieActor.movie_id == movie.movie_id).all()
         movie_dict['actors'] = [actor.name for actor in actors]
 
+        genres = db.session.query(Genre).join(MovieGenre, Genre.id == MovieGenre.genre_id).filter(MovieGenre.movie_id == movie.movie_id).all()
+        movie_dict['genres'] = [genre.title for genre in genres]
+
         movies_with_posters.append(movie_dict)
 
     return jsonify(movies_with_posters)
 
 @app.route('/movies_with_actors', methods=['GET'])
 def get_movies_with_actors():
-    movies = db.session.query(Movie).all()
-    movies_with_actors = []
+    # Perform a single query to join movies, movie_actors, and actors tables
+    results = db.session.query(Movie, Actor).outerjoin(MovieActor, Movie.movie_id == MovieActor.movie_id).outerjoin(Actor, MovieActor.actor_id == Actor.actor_id).all()
 
-    for movie in movies:
-        actors = db.session.query(Actor).join(MovieActor, Actor.actor_id == MovieActor.actor_id).filter(MovieActor.movie_id == movie.movie_id).all()
-        movie_dict = movie.to_dict()
-        movie_dict['actors'] = [actor.name for actor in actors]
-        movies_with_actors.append(movie_dict)
+    # Use a dictionary to group actors by movies
+    movies = {}
+    for movie, actor in results:
+        if movie.movie_id not in movies:
+            movies[movie.movie_id] = movie.to_dict()
+            movies[movie.movie_id]['actors'] = []
+        if actor:
+            movies[movie.movie_id]['actors'].append(actor.name)
 
-    return jsonify(movies_with_actors)
+    return jsonify(list(movies.values()))
+
+
+@app.route('/actor/<int:actor_id>/movies', methods=['GET'])
+def get_films_for_actor(actor_id):
+    films = db.session.query(Movie.title).join(MovieActor, Movie.movie_id == MovieActor.movie_id).filter(MovieActor.actor_id == actor_id).all()
+    film_titles = [film.title for film in films]
+    return jsonify(film_titles)
+
+@app.route('/movie/<int:movie_id>/genres', methods=['GET'])
+def get_genres_for_movie(movie_id):
+    genres = db.session.query(Genre.title).join(MovieGenre, Genre.id == MovieGenre.genre_id).filter(MovieGenre.movie_id == movie_id).all()
+    genre_titles = [genre.title for genre in genres]
+    return jsonify(genre_titles)
 
 if __name__ == '__main__':
     with app.app_context():

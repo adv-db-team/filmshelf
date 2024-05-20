@@ -4,17 +4,12 @@ import Overlay from "./Overlay";
 
 const FilmList = ({ onDelete }) => {
     const [films, setFilms] = useState([]);
-    const [actors, setActors] = useState([]);
     const [selectedFilm, setSelectedFilm] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/movies')
+        fetch('http://localhost:5000/movies_with_actors')
             .then(response => response.json())
             .then(data => setFilms(data));
-
-        fetch('http://localhost:5000/actors')
-            .then(response => response.json())
-            .then(data => setActors(data));
     }, []);
 
     return (
@@ -23,10 +18,10 @@ const FilmList = ({ onDelete }) => {
             <ul>
                 {films.map(film => (
                     <li className="film-link" key={film.movie_id} onClick={() => setSelectedFilm(film)}>
-                        <img src={film.posterUrl} alt={film.title} />
+                        <img src={film.image_url} alt={film.title} />
                         <div className="film-info">
                             <h3>{film.title}</h3>
-                            <p>{film.plot}</p>
+                            {/*<p>{film.plot}</p>*/}
                         </div>
                     </li>
                 ))}
@@ -37,7 +32,6 @@ const FilmList = ({ onDelete }) => {
                     type="film"
                     onClose={() => setSelectedFilm(null)}
                     onDelete={onDelete}
-                    actors={actors}
                 />
             )}
         </div>

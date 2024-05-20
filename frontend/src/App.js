@@ -87,14 +87,6 @@ const App = () => {
     });
   };
 
-  const shuffle = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-      [array[i], array[j]] = [array[j], array[i]]; // swap elements
-    }
-    return array;
-  };
-
   return (
       <Router>
         <div className="App">
@@ -104,13 +96,13 @@ const App = () => {
               <>
                 <FilmCarousel films={moviesForCarousel} actors={actors} onDelete={handleDeleteFilm} />
                 <FilmList films={films} actors={actors} onDelete={handleDeleteFilm} />
-                <FloatingActionButton existingFilms={films.map((film) => film.title)} existingActors={actors.map((actor) => actor.name)} onAddFilm={handleAddFilm} onAddActor={handleAddActor} />
+                <FloatingActionButton onAddFilm={handleAddFilm} onAddActor={handleAddActor} />
               </>
             } />
             <Route path="/actors-list" element={
               <>
                 <ActorList actors={actors} films={films} onDelete={handleDeleteActor} />
-                <FloatingActionButton existingActors={actors.map((actor) => actor.name)} existingFilms={films.map((film) => film.title)} onAddFilm={handleAddFilm} onAddActor={handleAddActor} />
+                <FloatingActionButton onAddFilm={handleAddFilm} onAddActor={handleAddActor} />
               </>
             } />
           </Routes>

@@ -7,11 +7,6 @@ const FilmCarousel = ({ films, actors, onDelete }) => {
     const [currentFilmIndex, setCurrentFilmIndex] = useState(0);
     const [selectedFilm, setSelectedFilm] = useState(null);
 
-    const actorsDictionary = actors.reduce((acc, actor) => {
-        acc[actor.actor_id] = actor.name;
-        return acc;
-    }, {});
-
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentFilmIndex((prevIndex) => (prevIndex + 1) % films.length);

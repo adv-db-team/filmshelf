@@ -1,5 +1,7 @@
 #!/bin/bash
 
+lsof -i :5000 | grep Python | awk '{print $2}' | xargs kill -9
+
 cd backend || exit 1
 ./set-up-env.sh
 source venv/bin/activate
@@ -15,6 +17,5 @@ cd frontend && npm start
 cd ..
 
 kill $flask_pid
-lsof -i :5000 | grep Python | awk '{print $2}' | xargs kill -9
 
 echo "Server stopped"

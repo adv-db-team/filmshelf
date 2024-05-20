@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/FloatingActionButton.css';
 
-const predefinedGenres = [
-    'Action', 'Adventure', 'Animation', 'Biography', 'Comedy',
-    'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Film-Noir',
-    'History', 'Horror', 'Music', 'Musical', 'Mystery', 'Romance', 'Sci-Fi',
-    'Sport', 'Thriller', 'War', 'Western'
-];
-
 const FloatingActionButton = ({ onAddFilm, onAddActor }) => {
     const [isFormVisible, setFormVisible] = useState(false);
     const [formType, setFormType] = useState('film'); // 'film' or 'actor'
     const [existingFilms, setExistingFilms] = useState([]);
     const [existingActors, setExistingActors] = useState([]);
+    const [existingGenres, setExistingGenres] = useState([]);
 
     // Film form states
     const [title, setTitle] = useState('');
@@ -41,6 +35,10 @@ const FloatingActionButton = ({ onAddFilm, onAddActor }) => {
         fetch('http://localhost:5000/actors')
             .then(response => response.json())
             .then(data => setExistingActors(data.map(actor => actor.name)));
+
+        fetch('http://localhost:5000/genres')
+            .then(response => response.json())
+            .then(data => setExistingGenres(data.map(genre => genre.title)));
     }, []);
 
     const handleAddFilm = () => {
@@ -152,7 +150,7 @@ const FloatingActionButton = ({ onAddFilm, onAddActor }) => {
                             <div className="dropdown">
                                 <select onChange={handleAddGenre} value={genreInput}>
                                     <option value="" disabled>Select genre</option>
-                                    {predefinedGenres.map(genre => (
+                                    {existingGenres.map(genre => (
                                         <option key={genre} value={genre}>{genre}</option>
                                     ))}
                                 </select>
