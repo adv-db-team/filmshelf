@@ -48,7 +48,7 @@ const FloatingActionButton = ({ onAddFilm, onAddActor }) => {
     };
 
     const handleAddActor = () => {
-        onAddActor({ name, birthYear, filmography: filmography.split(','), photoUrl });
+        onAddActor({ name, birthYear, filmography: filmography, photoUrl });
         resetActorForm();
         setFormVisible(false);
     };

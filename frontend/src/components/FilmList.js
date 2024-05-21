@@ -14,7 +14,18 @@ const FilmList = ({ onDelete, searchQuery }) => {
             }
             fetch(url)
                 .then(response => response.json())
-                .then(data => setFilms(data));
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        setFilms(data);
+                    } else {
+                        console.error('Data is not an array:', data);
+                        setFilms([]);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    setFilms([]);
+                });
         };
 
         fetchFilms();

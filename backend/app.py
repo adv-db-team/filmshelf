@@ -94,9 +94,9 @@ def add_movie():
 
         genres = data.get('genres', [])
         for genre_name in genres:
-            genre = session.query(Genre).filter_by(name=genre_name).first()
+            genre = session.query(Genre).filter_by(title=genre_name).first()
             if genre is None:
-                genre = Genre(name=genre_name)
+                genre = Genre(title=genre_name)
                 session.add(genre)
                 session.commit()
             movie_genre = MovieGenre(movie_id=new_movie.id, genre_id=genre.id)
@@ -117,11 +117,20 @@ def get_actors():
 def add_actor():
     data = request.get_json()
     name = data.get('name')
+    films = data.get('filmography', [])
 
     with session_scope() as session:
         new_actor = Actor(name=name)
         session.add(new_actor)
         session.commit()
+
+        for film_title in films:
+            film = session.query(Movie).filter(Movie.title == film_title).first()
+            if film:
+                movie_actor = MovieActor(movie_id=film.id, actor_id=new_actor.id)
+                session.add(movie_actor)
+                session.commit()
+
         return jsonify(new_actor.to_dict()), 201
 
 
