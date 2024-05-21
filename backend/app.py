@@ -84,7 +84,7 @@ def add_movie():
     year = data.get('year')
     rating = data.get('rating')
     director = data.get('director')
-    image_url = data.get('image_url')
+    image_url = data.get('poster')
     description = data.get('description')
 
     with session_scope() as session:
@@ -117,10 +117,11 @@ def get_actors():
 def add_actor():
     data = request.get_json()
     name = data.get('name')
+    photo = data.get('photoUrl')
     films = data.get('filmography', [])
 
     with session_scope() as session:
-        new_actor = Actor(name=name)
+        new_actor = Actor(name=name, image_url=photo)
         session.add(new_actor)
         session.commit()
 
@@ -170,7 +171,7 @@ def add_horizontal_poster():
     horizontal_poster_url = data.get('horizontal_poster_url')
 
     with session_scope() as session:
-        new_poster = HorizontalPoster(movie_id=movie_id, horizontal_poster_url=horizontal_poster_url)
+        new_poster = HorizontalPoster(movie_id=id, horizontal_poster_url=horizontal_poster_url)
         session.add(new_poster)
         session.commit()
         return jsonify(new_poster.to_dict()), 201

@@ -20,7 +20,7 @@ const Overlay = ({ item, type, onClose, onDelete }) => {
     if (!item) return null;
 
     const handleDelete = () => {
-        onDelete(item.id || item.id);
+        onDelete(item.id);
         onClose();
     };
 
