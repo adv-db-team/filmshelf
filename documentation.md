@@ -4,8 +4,6 @@ The FilmShelf project is an educational application designed to manage a collect
 
 Source code for the project is available on GitHub: https://github.com/adv-db-team/filmshelf
 
-Link to the website: https://oyster-app-s25ba.ondigitalocean.app
-
 Local deployment manual is available in the README.md file.
 
 ## Key Components
